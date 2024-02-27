@@ -1,6 +1,36 @@
-{% extends "layout2.html" %}
+{% extends "layout.html" %}
 
 {% block container %}
-  <h1>Flask UTL</h1>
+  {% import '_macros.html'  as macros %}
+
+  <h1 class="text-center">Formulario</h1>
+  <h2 class="text-center">Base de Datos</h2>
+  <div class="row d-flex">
+    <div class="col-md-6">
+      <form name="sent" action="/index" id="contactForm" method="POST">
+
+        <div class="row control-group mb-3">
+          <div class="form-group form-group col-xs-12 floating-label-form-gruop controls">
+            {{macros.camposNuevos(form.nombre, class="form-control")}}
+          </div>
+        </div>
+    
+        <div class="row control-group mb-3" >
+          <div class="form-group form-group col-xs-12 floating-label-form-gruop controls">
+            {{macros.camposNuevos(form.apaterno, class="form-control")}}
+          </div>
+        </div>
+    
+        <div class="row control-group mb-3" >
+          <div class="form-group form-group col-xs-12 floating-label-form-gruop controls">
+            {{macros.camposNuevos(form.email, class="form-control")}}
+          </div>
+        </div>
+              
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="submit" class="btn btn-success m-2 col-md-12" value="Registrar" id="send-signup" name="signup">
+      </form>
+    </div>
+  </div>
 {% endblock %}
 
