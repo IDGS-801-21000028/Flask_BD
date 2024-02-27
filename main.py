@@ -27,7 +27,7 @@ def before_request():
 def after_reques(response):
   return response
 
-@app.route("/")
+@app.route("/", methods = ['GET','POST'])
 def index():
   crate_form= UserForm2(request.form)
   if request.method == 'POST':
@@ -36,6 +36,9 @@ def index():
       apaterno = crate_form.apaterno.data,
       email = crate_form.email.data
     )    
+    
+    print(alum)
+    
     db.session.add(alum)
     db.session.commit()
   

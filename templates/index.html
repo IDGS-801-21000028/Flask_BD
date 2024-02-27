@@ -7,7 +7,7 @@
   <h2 class="text-center">Base de Datos</h2>
   <div class="row d-flex">
     <div class="col-md-6">
-      <form name="sent" action="/index" id="contactForm" method="POST">
+      <form name="sent" action="/" id="contactForm" method="post">
 
         <div class="row control-group mb-3">
           <div class="form-group form-group col-xs-12 floating-label-form-gruop controls">
@@ -27,7 +27,7 @@
           </div>
         </div>
               
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
         <input type="submit" class="btn btn-success m-2 col-md-12" value="Registrar" id="send-signup" name="signup">
       </form>
     </div>
