@@ -21,7 +21,7 @@ def page_not_found(e):
 #Funciones before y after
 @app.before_request
 def before_request():
-  g.nombre = "Mario"
+  g.nombre = "Diego"
  
 @app.after_request
 def after_reques(response):
