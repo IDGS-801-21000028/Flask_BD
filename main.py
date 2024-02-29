@@ -35,9 +35,7 @@ def index():
       nombre=crate_form.nombre.data,
       apaterno = crate_form.apaterno.data,
       email = crate_form.email.data
-    )    
-    
-    print(alum)
+    )
     
     db.session.add(alum)
     db.session.commit()
@@ -66,11 +64,25 @@ def alumnos():
   print("Alumno: {}".format(g.nombre))
   return render_template("alumnos.html", form = alumno_clase, nom=nom, apa=apa, ama=ama, edad=edad, email=email)
 
-# @app.route("/AB_Completo", methods = ['GET','POST'])
-# def ABCompleto():
-#   create_form = froms.UserForm2(request.form)
-#   alumno = Alumnos.query.all()
-#   return ""
+@app.route("/eliminar", methods = ['GET','POST'])
+def eliminar():
+  create_form = UserForm2(request.form)
+  if request.method == 'GET':
+    id = request.arg.get('id')
+    alum1 = db.session.query(Alumnos).filter(Alumnos.id==id).first()
+    create_form
+    alumno = Alumnos.query.all()
+    print(alumno)
+
+  return render_template("ABC_Completo.html", alumno=alumno)
+
+@app.route("/ABC_Completo", methods = ['GET','POST'])
+def ABCompleto():
+  create_form = UserForm2(request.form)
+  alumno = Alumnos.query.all()
+  print(alumno)
+
+  return render_template("ABC_Completo.html", alumno=alumno)
 
 if __name__ == "__main__":  
   csrf.init_app(app)  
