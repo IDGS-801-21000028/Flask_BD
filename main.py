@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from forms import *
 from flask import flash
 from flask_wtf.csrf import CSRFProtect
@@ -35,12 +35,58 @@ def index():
       nombre=crate_form.nombre.data,
       apaterno = crate_form.apaterno.data,
       email = crate_form.email.data
-    )
-    
+    )    
     db.session.add(alum)
     db.session.commit()
+    alum = Alumnos()  
   
   return render_template("index.html", form=crate_form)
+
+@app.route("/eliminar", methods = ['GET','POST'])
+def eliminar():
+  create_form = UserForm2(request.form)
+  if request.method == 'GET':
+    id = request.args.get('id')
+    alum1 = db.session.query(Alumnos).filter(Alumnos.id==id).first()
+    create_form.id.data = request.args.get('id')
+    create_form.nombre.data = alum1.nombre
+    create_form.apaterno.data = alum1.apaterno
+    create_form.email.data = alum1.email
+  if request.method == 'POST':
+    id = create_form.id.data    
+    alumno = Alumnos.query.get(id)
+    #delete from alumnos where id=id
+    db.session.delete(alumno)
+    db.session.commit()
+    return redirect(url_for('ABC_Completo'))    
+  return render_template("Eliminar.html", form=create_form)
+
+@app.route("/modificar", methods = ['GET','POST'])
+def modificar():
+  create_form = UserForm2(request.form)
+  if request.method == 'GET':
+    id = request.args.get('id')
+    alum1 = db.session.query(Alumnos).filter(Alumnos.id==id).first()
+    create_form.id.data = request.args.get('id')
+    create_form.nombre.data = alum1.nombre
+    create_form.apaterno.data = alum1.apaterno
+    create_form.email.data = alum1.email
+  if request.method == 'POST':
+    id = create_form.id.data    
+    alumno = Alumnos.query.get(id)
+    #delete from alumnos where id=id
+    alumno.nombre = create_form.nombre.data
+    alumno.apaterno =create_form.apaterno.data
+    alumno.email = create_form.email.data
+    db.session.add(alumno)
+    db.session.commit()
+    return redirect(url_for('ABC_Completo'))    
+  return render_template("Modificar.html", form=create_form)
+
+@app.route("/ABC_Completo", methods = ['GET','POST'])
+def ABC_Completo():
+  alumno = Alumnos.query.all()
+  return render_template("ABC_Completo.html", alumno=alumno)
 
 # Enviar datos del back al front
 @app.route("/alumnos", methods = ['GET','POST'])
@@ -64,25 +110,6 @@ def alumnos():
   print("Alumno: {}".format(g.nombre))
   return render_template("alumnos.html", form = alumno_clase, nom=nom, apa=apa, ama=ama, edad=edad, email=email)
 
-@app.route("/eliminar", methods = ['GET','POST'])
-def eliminar():
-  create_form = UserForm2(request.form)
-  if request.method == 'GET':
-    id = request.arg.get('id')
-    alum1 = db.session.query(Alumnos).filter(Alumnos.id==id).first()
-    create_form
-    alumno = Alumnos.query.all()
-    print(alumno)
-
-  return render_template("ABC_Completo.html", alumno=alumno)
-
-@app.route("/ABC_Completo", methods = ['GET','POST'])
-def ABCompleto():
-  create_form = UserForm2(request.form)
-  alumno = Alumnos.query.all()
-  print(alumno)
-
-  return render_template("ABC_Completo.html", alumno=alumno)
 
 if __name__ == "__main__":  
   csrf.init_app(app)  
